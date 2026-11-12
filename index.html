@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Johann Lescano · Portfolio</title>
+<meta name="description" content="Johann Maximiliano Lescano — Editor de video e imagen, diseñador y productor de sonido. Buenos Aires, Argentina.">
+<link rel="icon" href="assets/logo-recorte.png">
+<style>
+  @font-face { font-family: "Bebas"; src: url("assets/BebasNeue-Regular.ttf") format("truetype"); font-display: swap; }
+  @font-face { font-family: "FunSized"; src: url("assets/FunSized.ttf") format("truetype"); font-display: swap; }
+
+  :root {
+    --bg: #2a2a2a;
+    --bg-deep: #222;
+    --fg: #fff;
+    --muted: #cfcfcf;
+    --red: #ff0000;
+    --line: #fff;
+    --glow: 0 0 6px rgba(255,255,255,.9), 0 0 18px rgba(255,255,255,.55), 0 0 40px rgba(255,255,255,.25);
+    --gutter: clamp(16px, 4vw, 56px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Bebas", "Oswald", Impact, sans-serif;
+    letter-spacing: .02em;
+    overflow-x: hidden;
+  }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; }
+
+  /* ---------- NAV ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px var(--gutter);
+    background: linear-gradient(to bottom, rgba(34,34,34,.95), rgba(34,34,34,0));
+    transition: background .3s;
+  }
+  .nav.scrolled { background: rgba(34,34,34,.96); box-shadow: 0 1px 0 rgba(255,255,255,.08); }
+  .nav__brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 1.5rem; }
+  .nav__brand img { width: 40px; height: 40px; object-fit: contain; }
+  .nav__brand span b { color: var(--red); font-weight: normal; }
+  .nav__links { display: flex; gap: clamp(14px, 2.5vw, 34px); list-style: none; margin: 0; padding: 0; }
+  .nav__links a { text-decoration: none; font-size: 1.25rem; opacity: .8; transition: opacity .2s, text-shadow .2s; }
+  .nav__links a:hover, .nav__links a:focus-visible { opacity: 1; text-shadow: var(--glow); }
+  .nav__toggle { display: none; background: none; border: 0; color: var(--fg); font: inherit; font-size: 1.4rem; cursor: pointer; }
+
+  /* ---------- HERO (portfolio 1) ---------- */
+  .hero {
+    min-height: 100vh; min-height: 100svh;
+    display: grid; place-items: center;
+    padding: 110px var(--gutter) 90px;
+    position: relative; overflow: hidden;
+  }
+  /* Todo el bloque escala con el tamaño del título (em), así el logo y los textos no se desacomodan */
+  .hero__inner {
+    position: relative; z-index: 0;
+    font-size: clamp(3rem, 12.5vw, 14rem);
+    width: max-content; max-width: 100%;
+  }
+  .hero__roles {
+    font-family: "Bebas", sans-serif; letter-spacing: .06em;
+    font-size: .17em; line-height: 1.25;
+    margin: 0 0 .35em; padding-left: .25em;
+  }
+  .hero__title {
+    margin: 0;
+    font-family: "FunSized", "Bebas", sans-serif;
+    font-size: 1em; font-weight: normal;
+    line-height: .95; letter-spacing: .01em;
+    color: var(--fg);
+    filter: drop-shadow(0 0 .06em rgba(255,255,255,.55)) drop-shadow(0 0 .16em rgba(255,255,255,.2));
+  }
+  .hero__name {
+    font-family: "Bebas", sans-serif; letter-spacing: .06em;
+    font-size: .17em; text-align: right;
+    margin: .3em 0 0; padding-right: .2em;
+  }
+  .hero__logo {
+    position: absolute; z-index: -1;
+    right: -.42em; bottom: 1.02em;
+    width: 1.75em; max-width: none;
+    filter: drop-shadow(0 0 .08em rgba(255,255,255,.3));
+    animation: bob 5s ease-in-out infinite;
+  }
+  .hero__scroll {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    font-size: 1.1rem; text-decoration: none; opacity: .7;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .hero__scroll::after { content: ""; width: 2px; height: 34px; background: var(--fg); animation: drip 1.8s ease-in-out infinite; transform-origin: top; }
+
+  @keyframes bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-.04em) rotate(-2deg); } }
+  @keyframes drip { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* ---------- ABOUT (portfolio 2) ---------- */
+  .about {
+    position: relative; overflow: hidden;
+    min-height: 100vh; min-height: 100svh;
+    display: flex; align-items: center;
+    padding: 110px var(--gutter) 90px;
+    background: var(--bg);
+  }
+  .about__media {
+    position: absolute; inset: 0;
+    /* difuminado: la foto se funde con el fondo en la parte de abajo */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 97%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 97%);
+  }
+  .about__media img {
+    width: 100%; height: 100%; max-width: none;
+    object-fit: cover; object-position: 85% 15%;
+    transform-origin: 74% 32%;
+    transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) scale(var(--zoom, 1));
+    transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .6s;
+    filter: brightness(.92);
+    will-change: transform;
+  }
+  .about:hover .about__media img { filter: brightness(1.06); }
+  .about::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, rgba(42,42,42,.95) 0%, rgba(42,42,42,.85) 40%, rgba(42,42,42,0) 62%);
+  }
+  .about__text { position: relative; z-index: 2; width: min(56%, 1050px); }
+  .about h2 { font-size: clamp(2.4rem, 4.9vw, 6rem); line-height: .95; margin: 0; font-weight: normal; }
+  .about h2 .red { color: var(--red); }
+  .about__sub { font-size: clamp(1rem, 1.4vw, 1.7rem); margin: .4em 0 0; }
+  .about__rule { height: 5px; background: var(--line); margin: .8em 0 1.1em; border: 0; }
+  .about p { font-size: clamp(1.1rem, 1.55vw, 1.9rem); line-height: 1.3; margin: 0 0 .55em; text-transform: uppercase; }
+
+  /* ---------- INFO GRID (portfolio 3) ---------- */
+  .info { padding: 110px var(--gutter) 90px; }
+  .info__grid {
+    max-width: 1680px; margin: 0 auto;
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr);
+    gap: clamp(28px, 6vw, 120px) clamp(28px, 9vw, 180px);
+  }
+  .box {
+    border: 3px solid var(--line); border-radius: 6px;
+    padding: clamp(16px, 2vw, 28px) clamp(16px, 1.6vw, 26px) clamp(20px, 2.4vw, 40px);
+    transition: box-shadow .3s;
+  }
+  .box:hover { box-shadow: 0 0 22px rgba(255,255,255,.18); }
+  .box h2 { font-weight: normal; font-size: clamp(2.2rem, 3.4vw, 3.6rem); margin: 0 0 .5em; line-height: 1; }
+  .box ul { list-style: none; margin: 0; padding: 0; }
+  .box li { font-size: clamp(1.35rem, 2vw, 2.1rem); line-height: 1.32; }
+  .box li::before { content: "- "; }
+
+  .tools {
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 30px) clamp(14px, 3vw, 60px);
+    padding: 0 clamp(0px, 5vw, 90px);
+  }
+  .tool { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .tool img {
+    width: 100%; max-width: 110px; aspect-ratio: 1; object-fit: contain;
+    transition: transform .25s, filter .25s;
+  }
+  .tool:hover img { transform: translateY(-4px) scale(1.06); filter: drop-shadow(0 0 12px rgba(255,255,255,.35)); }
+  .tool span { font-size: clamp(.85rem, 1.1vw, 1.1rem); opacity: 0; transform: translateY(-4px); transition: opacity .2s, transform .2s; color: var(--muted); }
+  .tool:hover span { opacity: 1; transform: none; }
+
+  .contact { display: flex; flex-direction: column; gap: clamp(16px, 2vw, 26px); padding-left: clamp(0px, 8vw, 90px); }
+  .contact a {
+    display: flex; align-items: center; gap: clamp(12px, 1.4vw, 20px);
+    text-decoration: none; font-size: clamp(1.4rem, 2.6vw, 2.8rem);
+    overflow-wrap: anywhere;
+  }
+  .contact a:hover .contact__txt, .contact a:focus-visible .contact__txt { text-shadow: var(--glow); }
+  .contact__icon {
+    flex: none; width: clamp(56px, 5.6vw, 106px); aspect-ratio: 1; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .contact__icon--mail { background: #6f9cf5; }
+  .contact__icon--mail svg { width: 58%; }
+  .contact__icon--wa { background: #fff; }
+  .contact__icon--wa img { width: 82%; }
+
+  /* ---------- PRODUCCIONES (portfolio 4) ---------- */
+  .prod { padding: 110px var(--gutter) 100px; text-align: center; }
+  .prod h2 { font-weight: normal; font-size: clamp(2.6rem, 6.4vw, 6.2rem); margin: 0 0 .6em; line-height: 1; }
+  .prod__grid {
+    max-width: 1240px; margin: 0 auto;
+    display: grid; grid-template-columns: 0.69fr 1fr;
+    gap: clamp(20px, 9vw, 175px);
+    align-items: stretch;
+  }
+  .prod__col { display: grid; gap: clamp(20px, 3.6vw, 60px); }
+  .neon {
+    position: relative;
+    border: 4px solid #fff; border-radius: 18px;
+    box-shadow: 0 0 8px #fff, 0 0 24px rgba(255,255,255,.6), 0 0 60px rgba(255,255,255,.25), inset 0 0 30px rgba(0,0,0,.6);
+    background: var(--bg-deep);
+    overflow: hidden;
+  }
+  .neon video { width: 100%; height: 100%; object-fit: cover; background: #000; cursor: pointer; }
+  .neon { transition: transform .35s, filter .35s; }
+  .neon.is-idle { filter: brightness(.5); }
+  .neon.is-active { transform: scale(1.015); }
+  .neon__sound {
+    position: absolute; right: 12px; bottom: 14px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(0,0,0,.65); font-size: clamp(.9rem, 1.1vw, 1.1rem);
+    pointer-events: none;
+  }
+  .neon__sound svg { width: 18px; height: 18px; flex: none; }
+  .neon__progress { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: rgba(255,255,255,.15); pointer-events: none; }
+  .neon__progress i { display: block; height: 100%; width: 0; background: #fff; box-shadow: 0 0 8px #fff; }
+  .neon--v { aspect-ratio: 9 / 16; }
+  .neon--h { aspect-ratio: 16 / 9; }
+  .neon figcaption {
+    position: absolute; left: 0; right: 0; top: 0;
+    padding: 12px 16px 28px;
+    background: linear-gradient(rgba(0,0,0,.75), transparent);
+    text-align: left; font-size: clamp(1rem, 1.6vw, 1.5rem);
+    pointer-events: none; transition: opacity .3s;
+  }
+  .neon.is-active:hover figcaption { opacity: 0; }
+
+  .prod__more {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: clamp(40px, 5vw, 70px);
+    padding: 14px 28px; border: 3px solid #fff; border-radius: 999px;
+    text-decoration: none; font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+    transition: box-shadow .25s, background .25s, color .25s;
+  }
+  .prod__more:hover, .prod__more:focus-visible { background: #fff; color: var(--bg); box-shadow: var(--glow); }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    border-top: 1px solid rgba(255,255,255,.12);
+    padding: 40px var(--gutter);
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;
+  }
+  footer .brand { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; }
+  footer .brand img { width: 52px; }
+  footer .brand b { color: var(--red); font-weight: normal; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 22px; border-radius: 999px; text-decoration: none;
+    background: var(--red); color: #fff; font-size: 1.3rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn:hover, .btn:focus-visible { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,0,0,.45); }
+  footer small { width: 100%; text-align: center; opacity: .5; font-size: 1rem; }
+
+  /* ---------- REVEAL ---------- */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  :focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .info__grid { grid-template-columns: 1fr; }
+    .info__grid .box:nth-child(1) { order: 1; }
+    .info__grid .box:nth-child(2) { order: 2; }
+    .info__grid .box:nth-child(3) { order: 3; }
+    .info__grid .box:nth-child(4) { order: 4; }
+    .tools { padding: 0; }
+    .tool span { opacity: 1; transform: none; }
+    .contact { padding-left: 0; }
+    .about { flex-direction: column; align-items: stretch; padding-top: 0; }
+    .about__media { position: relative; inset: auto; height: 62vh; margin: 0 calc(var(--gutter) * -1); }
+    .about__media img { object-position: 78% 20%; }
+    .about::before { display: none; }
+    .about__text { width: 100%; margin-top: -14vh; }
+  }
+  @media (max-width: 720px) {
+    .nav__toggle { display: block; }
+    .nav__links {
+      position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; gap: 0; background: rgba(34,34,34,.98);
+      max-height: 0; overflow: hidden; transition: max-height .3s;
+    }
+    .nav__links.open { max-height: 320px; }
+    .nav__links a { display: block; padding: 14px var(--gutter); border-top: 1px solid rgba(255,255,255,.08); }
+    .hero__inner { font-size: 14.5vw; }
+    .hero__roles, .hero__name { font-size: .24em; }
+    .hero__logo { right: -.15em; }
+    .prod__grid { grid-template-columns: 1fr; }
+    .prod__grid .neon--v { max-width: 340px; width: 100%; margin: 0 auto; }
+    .tools { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px 10px; }
+    .tool span { display: none; }
+    .contact a { font-size: clamp(1rem, 5.2vw, 1.4rem); }
+    .contact__icon { width: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav" aria-label="Principal">
+  <a class="nav__brand" href="#inicio">
+    <img src="assets/logo-recorte.png" alt="">
+    <span>JOHANN <b>LESCANO</b></span>
+  </a>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">MENÚ ☰</button>
+  <ul class="nav__links" id="navLinks">
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#habilidades">Habilidades</a></li>
+    <li><a href="#producciones">Producciones</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- 1 · PORTADA -->
+<header class="hero" id="inicio">
+  <div class="hero__inner">
+    <p class="hero__roles">SOUND DESIGNER<br>VIDEO - IMAGE EDITOR</p>
+    <h1 class="hero__title">PORTFOLIO</h1>
+    <p class="hero__name">JOHANN LESCANO</p>
+    <img class="hero__logo" src="assets/logo-recorte.png" alt="Logo de Lesca: lobo con gorra mirando a la derecha">
+  </div>
+  <a class="hero__scroll" href="#sobre-mi">Scroll</a>
+</header>
+
+<main>
+  <!-- 2 · SOBRE MÍ -->
+  <section class="about" id="sobre-mi" aria-labelledby="about-title">
+    <div class="about__media" id="aboutMedia"><img src="assets/seee.png" alt="Foto de Johann Lescano con gorra y anteojos"></div>
+    <div class="about__text reveal">
+      <h2 id="about-title">JOHANN MAXIMILIANO <span class="red">LESCANO</span></h2>
+      <p class="about__sub">EDITOR DE VIDEO E IMAGEN - DISEÑADOR Y PRODUCTOR DE SONIDO &nbsp;|&nbsp; BUENOS AIRES - ARGENTINA</p>
+      <hr class="about__rule">
+      <p>Soy un profesional del ámbito audiovisual con experiencia e interés en la música, el diseño y la producción de sonido. Mi recorrido comenzó a los 14 años como DJ, ahí desarrollé mis primeras habilidades musicales y mi interés por la producción audiovisual.</p>
+      <p>Actualmente estudio la carrera de Licenciatura en Audiovisión en la Universidad Nacional de Lanús.</p>
+      <p>Cuento con experiencia en manejo de software de edición como Photoshop, After Effects, DaVinci Resolve, Vegas Pro, FL Studio, Reaper y más programas de postproducción audiovisual.</p>
+    </div>
+  </section>
+
+  <!-- 3 · HABILIDADES / HERRAMIENTAS / HOBBIES / CONTACTO -->
+  <section class="info" id="habilidades" aria-label="Habilidades, herramientas, hobbies y contacto">
+    <div class="info__grid">
+      <article class="box reveal">
+        <h2>HABILIDADES</h2>
+        <ul>
+          <li>Edición de video</li>
+          <li>Producción y diseño sonoro</li>
+          <li>Diseño de logotipos</li>
+          <li>Manejo de redes sociales</li>
+          <li>Corrección de color</li>
+        </ul>
+      </article>
+
+      <article class="box reveal">
+        <h2>HERRAMIENTAS QUE UTILIZO</h2>
+        <div class="tools">
+          <div class="tool"><img src="assets/Photoshop.png" alt="Adobe Photoshop" loading="lazy"><span>Photoshop</span></div>
+          <div class="tool"><img src="assets/After effects.png" alt="Adobe After Effects" loading="lazy"><span>After Effects</span></div>
+          <div class="tool"><img src="assets/Da vinci.png" alt="DaVinci Resolve" loading="lazy"><span>DaVinci Resolve</span></div>
+          <div class="tool"><img src="assets/Sony vegas.png" alt="Vegas Pro" loading="lazy"><span>Vegas Pro</span></div>
+          <div class="tool"><img src="assets/Filmora.png" alt="Filmora" loading="lazy"><span>Filmora</span></div>
+          <div class="tool"><img src="assets/Fl Studio.png" alt="FL Studio" loading="lazy"><span>FL Studio</span></div>
+          <div class="tool"><img src="assets/Reaper.png" alt="Reaper" loading="lazy"><span>Reaper</span></div>
+          <div class="tool"><img src="assets/Audacity.png" alt="Audacity" loading="lazy"><span>Audacity</span></div>
+          <div class="tool"><img src="assets/Sound forge.png" alt="Sound Forge" loading="lazy"><span>Sound Forge</span></div>
+          <div class="tool"><img src="assets/Ableton.png" alt="Ableton Live" loading="lazy"><span>Ableton Live</span></div>
+        </div>
+      </article>
+
+      <article class="box reveal">
+        <h2>HOBBIES</h2>
+        <ul>
+          <li>Fotografía</li>
+          <li>Videojuegos</li>
+          <li>Películas y series</li>
+          <li>Fútbol</li>
+          <li>Música</li>
+        </ul>
+      </article>
+
+      <article class="box reveal" id="contacto">
+        <h2>CONTACTO</h2>
+        <div class="contact">
+          <a href="mailto:johannlescano1999@gmail.com">
+            <span class="contact__icon contact__icon--mail" aria-hidden="true">
+              <svg viewBox="0 0 64 44" fill="none" stroke="#6f9cf5" stroke-width="3"><rect x="1.5" y="1.5" width="61" height="41" rx="3" fill="#fff"/><path d="M2 3l30 22L62 3M2 41l22-19M62 41L40 22"/></svg>
+            </span>
+            <span class="contact__txt">JOHANNLESCANO1999@GMAIL.COM</span>
+          </a>
+          <a href="https://wa.me/541164704908" target="_blank" rel="noopener">
+            <span class="contact__icon contact__icon--wa" aria-hidden="true"><img src="assets/Whatsapp.png" alt=""></span>
+            <span class="contact__txt">+54 11-6470-4908</span>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4 · PRODUCCIONES REALIZADAS -->
+  <section class="prod" id="producciones" aria-labelledby="prod-title">
+    <h2 id="prod-title" class="reveal">PRODUCCIONES REALIZADAS</h2>
+    <div class="prod__grid">
+      <figure class="neon neon--v reveal" style="margin:0">
+        <video src="assets/CALZADA RAPEA FT MI BARRIO MI CREW.mp4" muted playsinline preload="metadata"></video>
+        <figcaption>Calzada Rapea ft. Mi Barrio Mi Crew</figcaption>
+        <span class="neon__sound" aria-hidden="true"></span><span class="neon__progress"><i></i></span>
+      </figure>
+      <div class="prod__col">
+        <figure class="neon neon--h reveal" style="margin:0">
+          <video src="assets/COMU DEL FREE DELUXE.mp4" muted playsinline preload="metadata"></video>
+          <figcaption>Comu del Free · Deluxe</figcaption>
+          <span class="neon__sound" aria-hidden="true"></span><span class="neon__progress"><i></i></span>
+        </figure>
+        <figure class="neon neon--h reveal" style="margin:0">
+          <video src="assets/COMU DEL FREE FECHA 8.mp4" muted playsinline preload="metadata"></video>
+          <figcaption>Comu del Free · Fecha 8</figcaption>
+          <span class="neon__sound" aria-hidden="true"></span><span class="neon__progress"><i></i></span>
+        </figure>
+      </div>
+    </div>
+    <a class="prod__more reveal" href="https://drive.google.com/file/d/1nHKLj-blikKrxYFuAZlFt5Py9uI0eqkI/view?usp=sharing" target="_blank" rel="noopener">VER MÁS EN GOOGLE DRIVE ↗</a>
+  </section>
+</main>
+
+<footer>
+  <div class="brand"><img src="assets/logo-recorte.png" alt=""><span>JOHANN <b>LESCANO</b></span></div>
+  <a class="btn" href="assets/Currículum Vitae Johann Lescano.pdf" download>DESCARGAR CV ↓</a>
+  <small>© <span id="year"></span> Johann Maximiliano Lescano · Buenos Aires, Argentina</small>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  links.addEventListener('click', e => { if (e.target.tagName === 'A') { links.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ---- Sobre mí: zoom con el scroll + parallax con el mouse ----
+  const about = document.getElementById('sobre-mi');
+  const aboutImg = document.querySelector('#aboutMedia img');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let hoverZoom = 0;
+  function updateAboutZoom() {
+    const r = about.getBoundingClientRect();
+    // 0 cuando la sección entra por abajo, 1 cuando ocupa la pantalla
+    const p = Math.min(1, Math.max(0, 1 - r.top / innerHeight));
+    aboutImg.style.setProperty('--zoom', (1.18 - p * .18 + hoverZoom).toFixed(3));
+  }
+  if (!reduceMotion) {
+    addEventListener('scroll', updateAboutZoom, { passive: true });
+    addEventListener('resize', updateAboutZoom);
+    updateAboutZoom();
+    about.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      const r = about.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top) / r.height - .5;
+      aboutImg.style.setProperty('--mx', (-x * 30).toFixed(1) + 'px');
+      aboutImg.style.setProperty('--my', (-y * 20).toFixed(1) + 'px');
+    });
+    about.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { hoverZoom = .06; updateAboutZoom(); } });
+    about.addEventListener('pointerleave', () => {
+      hoverZoom = 0;
+      aboutImg.style.setProperty('--mx', '0px');
+      aboutImg.style.setProperty('--my', '0px');
+      updateAboutZoom();
+    });
+  }
+
+  // ---- Producciones: un video a la vez, muteado; sonido al pasar el mouse o con clic ----
+  const ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m22 9-6 6m0-6 6 6"/></svg>';
+  const ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+  const canHover = matchMedia('(hover: hover)').matches;
+  const cards = [...document.querySelectorAll('.neon')];
+  const vids = cards.map(c => c.querySelector('video'));
+  let current = 0, inView = false, hovered = null, userMuted = false;
+
+  function badge(i, msg) {
+    const v = vids[i];
+    cards[i].querySelector('.neon__sound').innerHTML = (v.muted ? ICON_OFF : ICON_ON) +
+      (msg || (v.muted ? (canHover ? 'Pasá el mouse para escuchar' : 'Tocá para escuchar') : 'Sonido activado'));
+  }
+  function setActive(i) {
+    current = i;
+    vids.forEach((v, j) => {
+      if (j !== i) { v.pause(); v.muted = true; }
+      cards[j].classList.toggle('is-active', j === i);
+      cards[j].classList.toggle('is-idle', j !== i);
+      badge(j);
+    });
+  }
+  function playCurrent() {
+    const p = vids[current].play();
+    if (p) p.catch(() => {});
+  }
+  function unmute(i) {
+    const v = vids[i];
+    v.muted = false;
+    playCurrent();
+    badge(i);
+    // Si el navegador bloquea el audio (todavía no hubo un clic en la página), vuelve a mute y avisa
+    setTimeout(() => {
+      if (v.paused && current === i && inView) { v.muted = true; playCurrent(); badge(i, 'Hacé clic para activar el sonido'); }
+    }, 150);
+  }
+
+  cards.forEach((card, i) => {
+    const v = vids[i];
+    v.addEventListener('ended', () => {
+      if (hovered === i) { v.currentTime = 0; playCurrent(); return; }
+      setActive((i + 1) % vids.length);
+      playCurrent();
+    });
+    v.addEventListener('timeupdate', () => {
+      card.querySelector('.neon__progress i').style.width = (v.currentTime / v.duration * 100 || 0) + '%';
+    });
+    card.addEventListener('mouseenter', () => {
+      hovered = i;
+      if (current !== i) setActive(i);
+      playCurrent();
+      if (!userMuted) unmute(i);
+    });
+    card.addEventListener('mouseleave', () => {
+      hovered = null;
+      v.muted = true;
+      badge(i);
+    });
+    card.addEventListener('click', () => {
+      if (current !== i) { setActive(i); playCurrent(); }
+      if (v.muted) { userMuted = false; unmute(i); }
+      else { userMuted = true; v.muted = true; badge(i); }
+    });
+  });
+
+  new IntersectionObserver(([en]) => {
+    inView = en.isIntersecting;
+    if (inView) playCurrent();
+    else vids.forEach(v => { v.pause(); v.muted = true; });
+    vids.forEach((v, j) => badge(j));
+  }, { threshold: .35 }).observe(document.querySelector('.prod__grid'));
+  setActive(0);
+</script>
+</body>
+</html>
